@@ -29,14 +29,15 @@ public class DriverInfoManager {
                 .filter(a -> !"".equals(a))
                 .collect(Collectors.toList());
         for (String key : keys) {
-            this.infos.put(key,
+            DriverInfo driverInfo =
                     new DriverInfo(prop.getProperty(key + ".jdbc.ip"),
                             Integer.parseInt(prop.getProperty(key + ".jdbc.port")),
                             prop.getProperty(key + ".jdbc.database"),
                             prop.getProperty(key + ".jdbc.user"),
-                            prop.getProperty(key + ".jdbc.password"))
-                    );
-            this.infos.get(key).setLoggerLevel(prop.getProperty(key + ".jdbc.loggerLevel", "OFF"));
+                            prop.getProperty(key + ".jdbc.password"));
+            driverInfo.parseJdbcProperties(key, prop);
+            driverInfo.setLoggerLevel(prop.getProperty(key + ".jdbc.loggerLevel", "OFF"));
+            this.infos.put(key, driverInfo);
         }
         activityKey = prop.getProperty(PROP_ACTIVITY);
     }

@@ -1,5 +1,6 @@
 package common;
 
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -23,6 +24,7 @@ public class DriverInfo {
     private String user;
     private String password;
     private LoggerLevel logLevel = LoggerLevel.OFF;
+    private Properties additionProp = new Properties();
     public DriverInfo(String ip, String user, String password) {
         this(ip, DEFAULT_PORT, DEFAULT_DATABASE, user, password);
     }
@@ -54,9 +56,20 @@ public class DriverInfo {
     }
 
     public Properties getProperties() {
-        Properties properties = new Properties();
+        Properties properties = new Properties(this.additionProp);
         properties.setProperty("passwd", getPassword());
         properties.setProperty("user", getUser());
         return properties;
+    }
+
+    public void parseJdbcProperties(String key, Properties prop) {
+        String prefix = key + ".jdbc.";
+        Enumeration<?> names = prop.propertyNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement().toString();
+            if (name.startsWith(prefix)) {
+                this.additionProp.put(name.substring(prefix.length()), prop.getProperty(name));
+            }
+        }
     }
 }
