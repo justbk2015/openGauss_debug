@@ -2,11 +2,10 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2012-2019. All rights reserved.
  */
 
-import common.DriverInfo;
-import common.DriverInfoManager;
-import common.Logger;
+import bin.common.DriverInfo;
+import bin.common.DriverInfoManager;
+import bin.common.Logger;
 import org.junit.Test;
-import org.omg.PortableInterceptor.INACTIVE;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

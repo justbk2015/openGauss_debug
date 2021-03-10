@@ -1,4 +1,4 @@
-package common;
+package bin.common;
 
 import java.util.Enumeration;
 import java.util.Locale;
@@ -59,6 +59,8 @@ public class DriverInfo {
         Properties properties = new Properties(this.additionProp);
         properties.setProperty("passwd", getPassword());
         properties.setProperty("user", getUser());
+        properties.setProperty("driver", "org.postgresql.Driver");
+        properties.setProperty("url", getFormatConnectionInfo());
         return properties;
     }
 

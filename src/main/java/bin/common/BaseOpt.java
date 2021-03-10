@@ -2,9 +2,7 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2012-2019. All rights reserved.
  */
 
-package common;
-
-import java.sql.DriverManager;
+package bin.common;
 
 /**
  * Title: the BaseOpt class

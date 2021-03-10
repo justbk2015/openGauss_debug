@@ -2,7 +2,7 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2012-2019. All rights reserved.
  */
 
-package common;
+package bin.common;
 
 /**
  * Title: the Logger class

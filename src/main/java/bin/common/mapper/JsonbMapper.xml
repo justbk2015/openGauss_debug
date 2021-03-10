@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bin.common.mapper.JsonbMapper">
+    <resultMap id="jsonbMap" type="bin.common.vo.JsonbVo">
+        <id property="id" column="id" />
+        <result property="data" column="data" typeHandler="bin.common.vo.JsonbTypeHandler"/>
+    </resultMap>
+<!--    <parameterMap id="jsonbParameterMap" type="bin.common.vo.JsonbVo">-->
+<!--        <parameter property="id" />-->
+<!--        <parameter property="data" typeHandler="bin.common.vo.JsonbTypeHandler"/>-->
+<!--    </parameterMap>-->
+    <update id="createTable" statementType="STATEMENT">
+        create table t_jsonb(id int, data jsonb)
+    </update>
+    <update id="dropTable" statementType="STATEMENT">
+        drop table if exist t_jsonb
+    </update>
+    <insert id="insertOne" parameterType="jsonbVo">
+        insert into t_jsonb values(#{id},
+        #{data, typeHandler=bin.common.vo.JsonbTypeHandler})
+    </insert>
+    <select id="selectJsonb" resultMap="jsonbMap">
+        select * from t_jsonb where id = #{id}
+    </select>
+    <select id="selectJsonbAll" resultMap="jsonbMap">
+        select * from t_jsonb
+    </select>
+</mapper>
