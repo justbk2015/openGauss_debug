@@ -12,15 +12,18 @@
 <!--        <parameter property="data" typeHandler="bin.common.vo.JsonbTypeHandler"/>-->
 <!--    </parameterMap>-->
     <update id="createTable" statementType="STATEMENT">
-        create table t_jsonb(id int, data jsonb)
+        create table if not exists t_jsonb(id int primary key, data jsonb)
     </update>
     <update id="dropTable" statementType="STATEMENT">
-        drop table if exist t_jsonb
+        drop table if exists t_jsonb
     </update>
     <insert id="insertOne" parameterType="jsonbVo">
         insert into t_jsonb values(#{id},
         #{data, typeHandler=bin.common.vo.JsonbTypeHandler})
     </insert>
+    <select id="selectMaxId" resultType="int">
+        select case when max(id) is null then 0 else max(id)+1 end as maxId  from t_jsonb;
+    </select>
     <select id="selectJsonb" resultMap="jsonbMap">
         select * from t_jsonb where id = #{id}
     </select>

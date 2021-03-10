@@ -21,6 +21,7 @@ public interface JsonbMapper {
     void createTable();
     void dropTable();
     int insertOne(JsonbVo vo);
+    int selectMaxId();
     JsonbVo selectJsonb(int id);
     List<JsonbVo> selectJsonbAll();
 }
