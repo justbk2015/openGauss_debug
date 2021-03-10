@@ -7,27 +7,26 @@
         <id property="id" column="id" />
         <result property="data" column="data" typeHandler="bin.common.vo.JsonbTypeHandler"/>
     </resultMap>
-<!--    <parameterMap id="jsonbParameterMap" type="bin.common.vo.JsonbVo">-->
-<!--        <parameter property="id" />-->
-<!--        <parameter property="data" typeHandler="bin.common.vo.JsonbTypeHandler"/>-->
-<!--    </parameterMap>-->
-    <update id="createTable" statementType="STATEMENT">
-        create table if not exists t_jsonb(id int primary key, data jsonb)
-    </update>
-    <update id="dropTable" statementType="STATEMENT">
-        drop table if exists t_jsonb
-    </update>
+    <sql id="jsonbTableName">
+        t_jsonb
+    </sql>
+    <sql id="jsonbTableNameInclude">
+        from
+        <include refid="jsonbTableName" />
+    </sql>
     <insert id="insertOne" parameterType="jsonbVo">
-        insert into t_jsonb values(#{id},
+        insert into
+        <include refid="jsonbTableName" />
+        values(#{id},
         #{data, typeHandler=bin.common.vo.JsonbTypeHandler})
     </insert>
-    <select id="selectMaxId" resultType="int">
-        select case when max(id) is null then 0 else max(id)+1 end as maxId  from t_jsonb;
-    </select>
     <select id="selectJsonb" resultMap="jsonbMap">
-        select * from t_jsonb where id = #{id}
+        select *
+        <include refid="jsonbTableNameInclude" />
+        where id = #{id}
     </select>
     <select id="selectJsonbAll" resultMap="jsonbMap">
-        select * from t_jsonb
+        select *
+        <include refid="jsonbTableNameInclude" />
     </select>
 </mapper>
