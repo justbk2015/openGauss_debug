@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bin.common.mapper.BlobMapper">
+    <resultMap id="blobMap" type="bin.common.vo.BlobVo">
+        <id property="id" column="id" />
+        <result property="descdata" column="descdata" />
+        <result property="data" column="data" typeHandler="bin.common.vo.BlobTypeHandler"/>
+    </resultMap>
+    <sql id="blobTableName">
+        t_blob
+    </sql>
+    <sql id="blobTableNameInclude">
+        from
+        <include refid="blobTableName" />
+    </sql>
+    <insert id="insertBlobOne" parameterType="blobVo">
+        insert into
+        <include refid="blobTableName" />
+        values(#{id}, #{descdata}, #{data, jdbcType=BLOB, typeHandler=bin.common.vo.BlobTypeHandler})
+    </insert>
+    <select id="selectBlobById" resultMap="blobMap">
+        select *
+        <include refid="blobTableNameInclude" />
+        where id = #{id}
+    </select>
+    <select id="selectBlobAll" resultMap="blobMap">
+        select *
+        <include refid="blobTableNameInclude" />
+    </select>
+</mapper>

@@ -3,6 +3,7 @@ package bin.common;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.stream.IntStream;
 
 /**
  * author: z00588921
@@ -52,6 +53,7 @@ public class DriverInfo {
         StringBuilder sb = new StringBuilder(128);
         sb.append(String.format(DEFAULT_CONNECT_FORMAT, this.ip, this.port, this.database));
         sb.append("?loggerLevel=" + logLevel.name());
+        sb.append("&ApplicationName=" + IntStream.rangeClosed(0, 17).mapToObj(idx -> "a").reduce((a, b) -> a + b).get());
         return sb.toString();
     }
 

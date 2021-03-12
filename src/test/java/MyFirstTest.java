@@ -26,7 +26,7 @@ import java.util.List;
  * @since 2021/1/28
  */
 public class MyFirstTest {
-    public static DriverInfo info = DriverInfoManager.getInfo();
+    public static DriverInfo info = DriverInfoManager.getInfo("db5");
     public static TypeConvert convert = new TypeConvert();
     public static SimpleParseRs sRs = new SimpleParseRs();
     @Test
