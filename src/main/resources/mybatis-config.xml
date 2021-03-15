@@ -21,5 +21,6 @@
     <mappers>
         <mapper resource="bin/common/mapper/JsonbMapper.xml"/>
         <mapper resource="bin/common/mapper/BlobMapper.xml"/>
+        <mapper class="bin.common.mapper.BatchInsertMapper" />
     </mappers>
 </configuration>
