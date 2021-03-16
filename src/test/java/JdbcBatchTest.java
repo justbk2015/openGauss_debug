@@ -59,6 +59,13 @@ public class JdbcBatchTest extends BaseJdbcTestCase {
     }
 
     @Test
+    public void testOneBatchInsert() throws SQLException {
+        int insertNum = 1000;
+        testBatchInsert(insertNum);
+        assertEquals(insertNum, count());
+    }
+
+    @Test
     public void testManyBatchInsert() throws SQLException {
         int n = 10;
         int insertNum = 1000;
@@ -77,17 +84,21 @@ public class JdbcBatchTest extends BaseJdbcTestCase {
                 }
             }).start();
         }
-        while (taskNumber.get() != 0) {
+        // in ms
+        long perWait = 200;
+        // wait 3 min
+        long waitTime = (3 * 60 * 1000) / perWait;
+        while (taskNumber.get() != 0 && waitTime > 0) {
             try {
-                Thread.sleep(200);
+                Thread.sleep(perWait);
+                waitTime -= 1;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
         assertEquals(n * insertNum, count());
-
     }
-//    @Test
+
     public void testBatchInsert(int insertNum) throws SQLException {
         try (Connection conn = DriverInfoManager.getConnection(info)) {
             try (PreparedStatement ps = conn.prepareStatement(insertFormat(BatchInsertVo.toPrepareStmt()))) {
@@ -101,7 +112,6 @@ public class JdbcBatchTest extends BaseJdbcTestCase {
                 ps.clearBatch();
             }
         }
-//        assertEquals(insertNum, count());
     }
 
     private String insertFormat(String insertData) {
