@@ -6,6 +6,7 @@ package bin.common.mapper;
 
 import bin.common.vo.BlobVo;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.sql.Blob;
 import java.util.List;
@@ -21,6 +22,12 @@ import java.util.List;
 public interface BlobMapper {
     @Select("select case when max(id) is null then 0 else max(id)+1 end as maxId  from t_blob")
     int selectMaxId();
+
+    @Update("create table if not exists t_blob(id int primary key, descdata varchar, data blob)")
+    void createTable();
+
+    @Update("drop table if exists t_blob")
+    void dropTable();
 
     int insertBlobOne(BlobVo blobVo);
     BlobVo selectBlobById(int id);

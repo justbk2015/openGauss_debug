@@ -8,6 +8,7 @@ import bin.common.mapper.BatchInsertMapper;
 import bin.common.mapper.BlobMapper;
 import bin.common.service.FactoryInstance;
 import bin.common.vo.BatchInsertVo;
+import common.testcase.BaseMyBatisTestCase;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.After;
@@ -29,36 +30,18 @@ import static org.junit.Assert.assertEquals;
  * @version [openGauss_debug 0.0.1 2021/3/15]
  * @since 2021/3/15
  */
-public class MybatisProviderTest {
-    private SqlSessionFactory factory = null;
-    private SqlSession sqlSession;
-    private BatchInsertMapper mapper;
-    private static int[] autoIdCreateLock = new int[0];
-    private static AtomicInteger autoId = null;
+public class MybatisProviderTest extends BaseMyBatisTestCase<BatchInsertMapper> {
     @Before
     public void setUp() throws IOException {
-        factory = FactoryInstance.INSTANCE.getSqlSessionFactory();
-        sqlSession = factory.openSession(true);
-        mapper = sqlSession.getMapper(BatchInsertMapper.class);
+        initSession();
         mapper.createTable();
         initAutoId(mapper);
     }
 
-    private static void initAutoId(BatchInsertMapper mapper) {
-        if (autoId != null) {
-            return;
-        }
-        synchronized (autoIdCreateLock) {
-            if (autoId != null) {
-                return;
-            }
-            autoId = new AtomicInteger(mapper.maxId());
-        }
-    }
     @After
     public void tearDown() throws SQLException {
         mapper.dropTable();
-        sqlSession.close();
+        closeSession();
     }
 
     @Test
@@ -69,5 +52,15 @@ public class MybatisProviderTest {
         vo.data = "this is a test " + vo.id;
         int num = mapper.add(vo);
         assertEquals(1, num);
+    }
+
+    @Override
+    public BatchInsertMapper getMapper() {
+        return getMapper(BatchInsertMapper.class);
+    }
+
+    @Override
+    public int getMaxId(BatchInsertMapper mapper) {
+        return mapper.maxId();
     }
 }
